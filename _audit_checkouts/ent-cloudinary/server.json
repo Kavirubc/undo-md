@@ -1,0 +1,94 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.cloudinary/asset-management-mcp",
+  "title": "Cloudinary Asset Management",
+  "description": "Upload, organize, search, and transform images, videos, and files with AI-powered tools.",
+  "repository": {
+    "url": "https://github.com/cloudinary/asset-management-mcp",
+    "source": "github"
+  },
+  "version": "0.9.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@cloudinary/asset-management-mcp",
+      "version": "0.9.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "CLOUDINARY_CLOUD_NAME",
+          "description": "Your Cloudinary cloud name. Find it in your Cloudinary Dashboard.",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "CLOUDINARY_API_KEY",
+          "description": "Your Cloudinary API key. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "CLOUDINARY_API_SECRET",
+          "description": "Your Cloudinary API secret. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    },
+    {
+      "registryType": "oci",
+      "identifier": "docker.io/cloudinary/asset-management-mcp:0.9.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "CLOUDINARY_CLOUD_NAME",
+          "description": "Your Cloudinary cloud name. Find it in your Cloudinary Dashboard.",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "CLOUDINARY_API_KEY",
+          "description": "Your Cloudinary API key. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "CLOUDINARY_API_SECRET",
+          "description": "Your Cloudinary API secret. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://asset-management.mcp.cloudinary.com/mcp",
+      "headers": [
+        {
+          "name": "cloudinary-cloud-name",
+          "description": "Your Cloudinary cloud name. Find it in your Cloudinary Dashboard.",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "cloudinary-api-key",
+          "description": "Your Cloudinary API key. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "cloudinary-api-secret",
+          "description": "Your Cloudinary API secret. Found in Dashboard > Settings > Access Keys.",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

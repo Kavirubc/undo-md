@@ -1,0 +1,69 @@
+{
+  "name": "@pinecone-database/mcp",
+  "version": "0.2.1",
+  "description": "Model Context Protocol server for Pinecone - enables AI assistants to interact with Pinecone indexes and documentation",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "pinecone-mcp": "dist/index.js"
+  },
+  "private": false,
+  "files": [
+    "dist",
+    "!dist/**/*.test.js",
+    "!dist/**/*.test.d.ts",
+    "!dist/test-utils"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinecone-io/pinecone-mcp.git"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "format": "prettier --write 'src/**/*.ts' '*.json' '.prettierrc'",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "@pinecone-database/pinecone": "^6.1.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.10",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^4.0.18"
+  },
+  "keywords": [
+    "mcp",
+    "pinecone",
+    "vector-database",
+    "ai",
+    "model-context-protocol"
+  ],
+  "homepage": "https://docs.pinecone.io/guides/operations/mcp-server",
+  "bugs": {
+    "url": "https://github.com/pinecone-io/pinecone-mcp/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

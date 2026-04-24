@@ -1,0 +1,129 @@
+configVersion: 2.0.0
+generation:
+  sdkClassName: CloudinaryAssetMgmt
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: true
+    sharedErrorComponentsApr2025: true
+    sharedNestedComponentsJan2026: false
+    nameOverrideFeb2026: false
+  auth:
+    oAuth2ClientCredentialsEnabled: true
+    oAuth2PasswordEnabled: true
+    hoistGlobalSecurity: true
+  inferSSEOverload: true
+  sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
+  versioningStrategy: automatic
+  persistentEdits:
+    enabled: "true"
+  tests:
+    generateTests: false
+    generateNewTests: true
+    skipResponseBodyAssertions: false
+mcp-typescript:
+  version: 0.9.0
+  additionalDependencies:
+    dependencies: {}
+    devDependencies: {}
+    peerDependencies: {}
+  additionalPackageJSON: {}
+  advancedFlags:
+    - apiHost
+    - oauth2
+    - region
+    - serverIndex
+  author: Cloudinary
+  authors:
+    - Cloudinary
+    - Speakeasy
+  baseErrorName: CloudinaryAssetMgmtError
+  clientServerStatusCodesAsErrors: true
+  cloudflareEnabled: false
+  constFieldsAlwaysOptional: true
+  defaultErrorName: CloudinaryAssetMgmtDefaultError
+  enableCustomCodeRegions: false
+  enableMCPServer: true
+  enableReactQuery: false
+  enumFormat: union
+  envVarPrefix: CLOUDINARY
+  fixEnumNameSanitization: false
+  flattenGlobalSecurity: true
+  flatteningOrder: parameters-first
+  formStringArrayEncodeMode: encoded-string
+  generateExamples: false
+  gramEnabled: false
+  imports:
+    option: openapi
+    paths:
+      callbacks: models/callbacks
+      errors: models/errors
+      operations: models/operations
+      shared: models/components
+      webhooks: models/webhooks
+  inferUnionDiscriminators: false
+  inputModelSuffix: input
+  jsonpath: legacy
+  maxMethodParams: 100
+  mcpbManifestOverlay:
+    author:
+      name: Cloudinary
+      url: https://cloudinary.com
+    description: Cloudinary Asset Management MCP Server
+    display_name: Cloudinary Asset Management
+    documentation: https://cloudinary.com/documentation/cloudinary_llm_mcp
+    homepage: https://github.com/cloudinary/asset-management-mcp
+    icon: icon.png
+    keywords:
+      - cloudinary
+      - asset-management
+      - images
+      - videos
+      - media
+      - cdn
+      - transformation
+    license: MIT
+    long_description: A comprehensive MCP server for managing your Cloudinary assets. Upload, organize, search, and transform images, videos, and files with AI-powered tools.
+    privacy_policies:
+      - https://cloudinary.com/privacy
+    repository:
+      type: git
+      url: https://github.com/cloudinary/asset-management-mcp.git
+    user_config:
+      api_key:
+        description: Your Cloudinary API key. Found in Dashboard → Settings → Access Keys.
+        required: true
+        title: API Key
+        type: string
+      api_secret:
+        description: Your Cloudinary API secret. Found in Dashboard → Settings → Access Keys.
+        required: true
+        sensitive: true
+        title: API Secret
+        type: string
+      cloud_name:
+        description: Your Cloudinary cloud name. Find it in your Cloudinary Dashboard.
+        required: true
+        title: Cloud Name
+        type: string
+  methodArguments: require-security-and-request
+  moduleFormat: dual
+  multipartArrayFormat: legacy
+  outputModelSuffix: output
+  packageName: '@cloudinary/asset-management-mcp'
+  responseFormat: flat
+  sseFlatResponse: true
+  templateVersion: v2
+  usageSDKInitImports: []
+  useIndexModules: true
+  validateResponse: false

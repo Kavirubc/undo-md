@@ -1,0 +1,17 @@
+*.mcpb
+bun.lock
+.dev.vars
+.wrangler/
+.env
+.env.local
+**/.speakeasy/logs/
+**/.speakeasy/reports/
+**/.speakeasy/temp/
+.speakeasy/out.openapi.yaml
+/.eslintcache
+/.tsbuildinfo
+/bin
+/esm
+/node_modules
+.DS_Store
+*.mp4

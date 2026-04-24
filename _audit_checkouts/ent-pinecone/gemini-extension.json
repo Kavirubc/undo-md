@@ -1,0 +1,10 @@
+{
+  "name": "pinecone-mcp",
+  "version": "1.0.0",
+  "mcpServers": {
+    "pinecone": {
+      "command": "npx",
+      "args": ["-y", "@pinecone-database/mcp"]
+    }
+  }
+}

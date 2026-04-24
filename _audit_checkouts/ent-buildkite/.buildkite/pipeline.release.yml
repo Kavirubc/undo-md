@@ -1,0 +1,66 @@
+agents:
+  queue: hosted
+
+steps:
+  - label: ":terminal: build ({{matrix}})"
+    matrix:
+      - "darwin"
+      - "linux"
+      - "windows"
+    artifact_paths:
+      - dist/**/*
+    plugins:
+      - docker-compose#v5.10.0:
+          command:
+            - .buildkite/release.sh
+            - release
+            - --clean
+            - --split
+          config: .buildkite/docker-compose.yaml
+          env:
+            - GOOS={{matrix}}
+          mount-buildkite-agent: true
+          run: goreleaser
+          shell: false
+          tty: true
+          progress: plain
+
+  - wait: ~
+
+  - label: ":rocket: :github: MCP Release"
+    artifact_paths:
+      - dist/**/*
+    env:
+      AWS_REGION: us-east-1
+    plugins:
+      - aws-assume-role-with-web-identity:
+          role-arn: arn:aws:iam::445615400570:role/pipeline-buildkite-buildkite-mcp-server-release
+          session-tags:
+            - organization_id
+            - organization_slug
+            - pipeline_slug
+      - aws-ssm#v1.0.0:
+          parameters:
+            GITHUB_USER: /pipelines/buildkite/buildkite-mcp-server-release/github-user
+            GITHUB_TOKEN: /pipelines/buildkite/buildkite-mcp-server-release/github-token
+            DOCKERHUB_PASSWORD: /pipelines/buildkite/buildkite-mcp-server-release/dockerhub-password
+            DOCKERHUB_USER: /pipelines/buildkite/buildkite-mcp-server-release/dockerhub-user
+      - artifacts#v1.9.3:
+          download:
+            - dist/**/*
+      - docker-compose#v5.10.0:
+          command:
+            - .buildkite/release.sh
+            - continue
+            - --merge
+          config: .buildkite/docker-compose.yaml
+          env:
+            - GITHUB_USER
+            - GITHUB_TOKEN
+            - DOCKERHUB_USER
+            - DOCKERHUB_PASSWORD
+          mount-buildkite-agent: true
+          run: goreleaser
+          shell: false
+          tty: true
+          progress: plain

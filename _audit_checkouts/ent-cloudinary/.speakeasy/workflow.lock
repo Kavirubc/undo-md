@@ -1,0 +1,39 @@
+speakeasyVersion: 1.761.9
+sources:
+    CloudinaryAssetMgmt-MCP-OAS:
+        sourceNamespace: cloudinary-asset-mgmt-mcp-oas
+        sourceRevisionDigest: sha256:3ccfb0fc1b7ad767fd1b995bf907c90fcf9c471db907bd17d1a218373338d7ed
+        sourceBlobDigest: sha256:a19d90bd1c430ae13650c0a179a4df9f2fcf4863f8250246b4aa5b0d4704f191
+        tags:
+            - latest
+            - 0.5.0
+targets:
+    cloudinary-asset-mgmt-mcp:
+        source: CloudinaryAssetMgmt-MCP-OAS
+        sourceNamespace: cloudinary-asset-mgmt-mcp-oas
+        sourceRevisionDigest: sha256:3ccfb0fc1b7ad767fd1b995bf907c90fcf9c471db907bd17d1a218373338d7ed
+        sourceBlobDigest: sha256:a19d90bd1c430ae13650c0a179a4df9f2fcf4863f8250246b4aa5b0d4704f191
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        CloudinaryAssetMgmt-MCP-OAS:
+            inputs:
+                - location: https://cloudinary.github.io/api-schemas/asset-management/schema.yml
+            overlays:
+                - location: https://cloudinary.github.io/api-schemas/overlays/security-scheme-cloud-overlay.yaml
+                - location: https://cloudinary.github.io/api-schemas/overlays/cloud-name-overlay.yml
+                - location: https://cloudinary.github.io/api-schemas/overlays/mcp-disabled.yml
+                - location: https://cloudinary.github.io/api-schemas/overlays/remove-mcp-description.yml
+                - location: https://cloudinary.github.io/api-schemas/overlays/signature-optional-overlay.yml
+                - location: https://cloudinary.github.io/api-schemas/asset-management/overlays/remove-multipart-overlay.yml
+                - location: https://cloudinary.github.io/api-schemas/asset-management/overlays/create-only-archive-mode-overlay.yml
+            registry:
+                location: registry.speakeasyapi.dev/cloudinary/cloudinary/cloudinary-asset-mgmt-mcp-oas
+    targets:
+        cloudinary-asset-mgmt-mcp:
+            target: mcp-typescript
+            source: CloudinaryAssetMgmt-MCP-OAS
+            publish:
+                npm:
+                    token: $npm_token

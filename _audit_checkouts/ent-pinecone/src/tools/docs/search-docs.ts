@@ -1,0 +1,62 @@
+import {Client} from '@modelcontextprotocol/sdk/client/index.js';
+import {StreamableHTTPClientTransport} from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
+import {z} from 'zod';
+import {DOCS_MCP_URL} from '../../constants.js';
+import {PINECONE_MCP_VERSION} from '../../version.js';
+
+const INSTRUCTIONS = 'Search Pinecone documentation for relevant information';
+
+const SCHEMA = {
+  query: z.string().describe('The text to search for.'),
+};
+
+type SearchDocsResult = {
+  content: {
+    type: 'text';
+    text: string;
+  }[];
+};
+
+let clientPromise: Promise<Client> | null = null;
+
+async function initializeClient(): Promise<Client> {
+  const httpTransport = new StreamableHTTPClientTransport(new URL(DOCS_MCP_URL));
+  const client = new Client({
+    name: 'pinecone-docs',
+    version: PINECONE_MCP_VERSION,
+  });
+  await client.connect(httpTransport);
+  return client;
+}
+
+function getDocsClient(): Promise<Client> {
+  if (!clientPromise) {
+    clientPromise = initializeClient().catch((error) => {
+      // Reset on failure so next call can retry
+      clientPromise = null;
+      throw error;
+    });
+  }
+  return clientPromise;
+}
+
+export function addSearchDocsTool(server: McpServer) {
+  server.registerTool(
+    'search-docs',
+    {description: INSTRUCTIONS, inputSchema: SCHEMA},
+    async ({query}) => {
+      const client = await getDocsClient();
+
+      return (await client.callTool({
+        name: 'get_context',
+        arguments: {query},
+      })) as SearchDocsResult;
+    },
+  );
+}
+
+// For testing: reset the cached client
+export function resetDocsClient() {
+  clientPromise = null;
+}

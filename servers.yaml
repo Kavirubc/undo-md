@@ -1,173 +1,131 @@
-# Input to extract.py — the 30 MCP servers to audit.
-#
-# Fill in `sha` when you pin each server's commit. `subpath` is used for
-# mono-repos (e.g. the modelcontextprotocol/servers repo, where each server
-# is a subdirectory).
-
 servers:
-
-  # --- Bucket A: Official MCP reference servers ---
-
-  - id: ref-filesystem
-    name: filesystem (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/filesystem
-    sha: null
-
-  - id: ref-git
-    name: git (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/git
-    sha: null
-
-  - id: ref-github
-    name: github (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/github
-    sha: null
-
-  - id: ref-gitlab
-    name: gitlab (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/gitlab
-    sha: null
-
-  - id: ref-postgres
-    name: postgres (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/postgres
-    sha: null
-
-  - id: ref-sqlite
-    name: sqlite (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/sqlite
-    sha: null
-
-  - id: ref-slack
-    name: slack (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/slack
-    sha: null
-
-  - id: ref-gdrive
-    name: google-drive (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/gdrive
-    sha: null
-
-  - id: ref-sentry
-    name: sentry (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/sentry
-    sha: null
-
-  - id: ref-memory
-    name: memory (MCP reference)
-    url: https://github.com/modelcontextprotocol/servers
-    subpath: src/memory
-    sha: null
-
-  # --- Bucket B: Top community MCP servers ---
-
-  - id: com-kubernetes
-    name: kubernetes
-    url: https://github.com/Flux159/mcp-server-kubernetes
-    sha: null
-
-  - id: com-docker
-    name: docker
-    url: https://github.com/ckreiling/mcp-server-docker
-    sha: null
-
-  - id: com-aws
-    name: aws
-    url: https://github.com/rishikavikondala/mcp-server-aws
-    sha: null
-
-  - id: com-terraform
-    name: terraform (tfmcp)
-    url: https://github.com/nwiizo/tfmcp
-    sha: null
-
-  - id: com-atlassian
-    name: atlassian (jira/confluence)
-    url: https://github.com/sooperset/mcp-atlassian
-    sha: null
-
-  - id: com-linear
-    name: linear
-    url: https://github.com/jerhadf/linear-mcp-server
-    sha: null
-
-  - id: com-notion
-    name: notion
-    url: https://github.com/suekou/mcp-notion-server
-    sha: null
-
-  - id: com-figma
-    name: figma
-    url: https://github.com/GLips/Figma-Context-MCP
-    sha: null
-
-  - id: com-playwright
-    name: playwright
-    url: https://github.com/microsoft/playwright-mcp
-    sha: null
-
-  - id: com-exa
-    name: exa search
-    url: https://github.com/exa-labs/exa-mcp-server
-    sha: null
-
-  # --- Bucket C: Enterprise vendor MCP servers ---
-
-  - id: ent-cloudflare
-    name: cloudflare
-    url: https://github.com/cloudflare/mcp-server-cloudflare
-    sha: null
-
-  - id: ent-stripe
-    name: stripe (agent toolkit)
-    url: https://github.com/stripe/agent-toolkit
-    sha: null
-
-  - id: ent-grafana
-    name: grafana
-    url: https://github.com/grafana/mcp-grafana
-    sha: null
-
-  - id: ent-elasticsearch
-    name: elasticsearch
-    url: https://github.com/elastic/mcp-server-elasticsearch
-    sha: null
-
-  - id: ent-pinecone
-    name: pinecone
-    url: https://github.com/pinecone-io/pinecone-mcp
-    sha: null
-
-  - id: ent-mongodb
-    name: mongodb
-    url: https://github.com/mongodb-js/mongodb-mcp-server
-    sha: null
-
-  - id: ent-neon
-    name: neon
-    url: https://github.com/neondatabase/mcp-server-neon
-    sha: null
-
-  - id: ent-supabase
-    name: supabase
-    url: https://github.com/supabase-community/supabase-mcp
-    sha: null
-
-  - id: ent-cloudinary
-    name: cloudinary
-    url: https://github.com/cloudinary/asset-management-mcp
-    sha: null
-
-  - id: ent-buildkite
-    name: buildkite
-    url: https://github.com/buildkite/buildkite-mcp-server
-    sha: null
+- id: ref-filesystem
+  name: filesystem (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/filesystem
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-git
+  name: git (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/git
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-github
+  name: github (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/github
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-gitlab
+  name: gitlab (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/gitlab
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-postgres
+  name: postgres (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/postgres
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-sqlite
+  name: sqlite (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/sqlite
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-slack
+  name: slack (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/slack
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-gdrive
+  name: google-drive (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/gdrive
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-sentry
+  name: sentry (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/sentry
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: ref-memory
+  name: memory (MCP reference)
+  url: https://github.com/modelcontextprotocol/servers
+  subpath: src/memory
+  sha: 4503e2d12b799448cd05f789dd40f9643a8d1a6c
+- id: com-kubernetes
+  name: kubernetes
+  url: https://github.com/Flux159/mcp-server-kubernetes
+  sha: fc02c20487916165dfc9e9f583ec92a4a4490f81
+- id: com-docker
+  name: docker
+  url: https://github.com/ckreiling/mcp-server-docker
+  sha: 6288015cee6b76b2e2bf2c64232f0748baf48c1c
+- id: com-aws
+  name: aws
+  url: https://github.com/rishikavikondala/mcp-server-aws
+  sha: ecc72d251134ed265953d448313a186bdcf5d4d9
+- id: com-terraform
+  name: terraform (tfmcp)
+  url: https://github.com/nwiizo/tfmcp
+  sha: db4ea8d9d774d30b6793807972e3b94effdfcd3c
+- id: com-atlassian
+  name: atlassian (jira/confluence)
+  url: https://github.com/sooperset/mcp-atlassian
+  sha: d8bc78698a63cb6b321c7ca796d6329d448f7f6d
+- id: com-linear
+  name: linear
+  url: https://github.com/jerhadf/linear-mcp-server
+  sha: 5e2cb621c52762618eb015b4a8d6bf884021b29e
+- id: com-notion
+  name: notion
+  url: https://github.com/suekou/mcp-notion-server
+  sha: f924bd8afae6a5f7b773d695a0ef8914e37512d4
+- id: com-figma
+  name: figma
+  url: https://github.com/GLips/Figma-Context-MCP
+  sha: 12280ba22a8d398c35db360a336356430dd0b182
+- id: com-playwright
+  name: playwright
+  url: https://github.com/microsoft/playwright-mcp
+  sha: 9a1eaa6088d84d2ea0ddcc622dfe90924ec12e5f
+- id: com-exa
+  name: exa search
+  url: https://github.com/exa-labs/exa-mcp-server
+  sha: ab506a48bcbd9147e5876e95e4a2b230ddcc9636
+- id: ent-cloudflare
+  name: cloudflare
+  url: https://github.com/cloudflare/mcp-server-cloudflare
+  sha: 17a978590595c9beffa4f2fa2e72cfc8f6c49d2d
+- id: ent-stripe
+  name: stripe (agent toolkit)
+  url: https://github.com/stripe/agent-toolkit
+  sha: dd6deb03137908d0102ffde97e60c90cf79bf929
+- id: ent-grafana
+  name: grafana
+  url: https://github.com/grafana/mcp-grafana
+  sha: 94f516409d3321b1d431cca1e94143a6e628f3e8
+- id: ent-elasticsearch
+  name: elasticsearch
+  url: https://github.com/elastic/mcp-server-elasticsearch
+  sha: a2b050d07c1e0af19974f63efa20f4553cb43b2b
+- id: ent-pinecone
+  name: pinecone
+  url: https://github.com/pinecone-io/pinecone-mcp
+  sha: 29a057f63fb639d4be85d473a6ec08d99dfcd460
+- id: ent-mongodb
+  name: mongodb
+  url: https://github.com/mongodb-js/mongodb-mcp-server
+  sha: 8d58a4d0ca80d228b5fbca6472b59f8a47c57469
+- id: ent-neon
+  name: neon
+  url: https://github.com/neondatabase/mcp-server-neon
+  sha: 1f8223c9e4accf8e08d6b250d0eed4dba008e31e
+- id: ent-supabase
+  name: supabase
+  url: https://github.com/supabase-community/supabase-mcp
+  sha: 17fb90f8655ad1ce7ee320614d22eb68bb26e510
+- id: ent-cloudinary
+  name: cloudinary
+  url: https://github.com/cloudinary/asset-management-mcp
+  sha: 5be9bcc3bffdd85d70f6abbf643ded849aeac6b3
+- id: ent-buildkite
+  name: buildkite
+  url: https://github.com/buildkite/buildkite-mcp-server
+  sha: b248497e12983c5029d7fc00a7a1374a38c24f20

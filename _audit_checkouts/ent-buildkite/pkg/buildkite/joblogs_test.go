@@ -1,0 +1,280 @@
+package buildkite
+
+import (
+	"context"
+	"errors"
+	"testing"
+	"time"
+
+	buildkitelogs "github.com/buildkite/buildkite-logs"
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+	"github.com/stretchr/testify/require"
+)
+
+// MockBuildkiteLogsClient for testing
+type MockBuildkiteLogsClient struct {
+	NewReaderFunc func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error)
+}
+
+func (m *MockBuildkiteLogsClient) NewReader(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+	if m.NewReaderFunc != nil {
+		return m.NewReaderFunc(ctx, org, pipeline, build, job, ttl, forceRefresh)
+	}
+	return buildkitelogs.NewParquetReader(ctx, "/tmp/test.parquet"), nil
+}
+
+var _ BuildkiteLogsClient = (*MockBuildkiteLogsClient)(nil)
+
+func TestParseCacheTTL(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected time.Duration
+	}{
+		{
+			name:     "empty string",
+			input:    "",
+			expected: 30 * time.Second,
+		},
+		{
+			name:     "valid duration",
+			input:    "5m",
+			expected: 5 * time.Minute,
+		},
+		{
+			name:     "invalid duration",
+			input:    "invalid",
+			expected: 30 * time.Second,
+		},
+		{
+			name:     "seconds",
+			input:    "45s",
+			expected: 45 * time.Second,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := parseCacheTTL(tt.input)
+			require.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestValidateSearchPattern(t *testing.T) {
+	tests := []struct {
+		name    string
+		pattern string
+		wantErr bool
+	}{
+		{
+			name:    "valid pattern",
+			pattern: "error",
+			wantErr: false,
+		},
+		{
+			name:    "valid regex",
+			pattern: "ERROR.*failed",
+			wantErr: false,
+		},
+		{
+			name:    "invalid regex",
+			pattern: "[",
+			wantErr: true,
+		},
+		{
+			name:    "empty pattern",
+			pattern: "",
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateSearchPattern(tt.pattern)
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestSearchLogsHandler(t *testing.T) {
+	assert := require.New(t)
+
+	mockClient := &MockBuildkiteLogsClient{
+		NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+			assert.Equal("test-org", org)
+			assert.Equal("test-pipeline", pipeline)
+			assert.Equal("123", build)
+			assert.Equal("job-456", job)
+			return buildkitelogs.NewParquetReader(ctx, "/tmp/test.parquet"), nil
+		},
+	}
+
+	ctx := ContextWithDeps(context.Background(), ToolDependencies{BuildkiteLogsClient: mockClient})
+
+	_, handler, _ := SearchLogs()
+
+	t.Run("invalid regex pattern", func(t *testing.T) {
+		params := SearchLogsParams{
+			JobLogsBaseParams: JobLogsBaseParams{
+				OrgSlug:      "test-org",
+				PipelineSlug: "test-pipeline",
+				BuildNumber:  "123",
+				JobID:        "job-456",
+			},
+			Pattern: "[", // Invalid regex
+		}
+
+		result, _, err := handler(ctx, createMCPRequest(t, map[string]any{}), params)
+		assert.NoError(err)
+		textContent := result.Content[0].(*mcp.TextContent)
+		assert.Contains(textContent.Text, "invalid regex pattern")
+	})
+
+	t.Run("client error", func(t *testing.T) {
+		errorClient := &MockBuildkiteLogsClient{
+			NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+				return nil, errors.New("download failed")
+			},
+		}
+
+		errorCtx := ContextWithDeps(context.Background(), ToolDependencies{BuildkiteLogsClient: errorClient})
+		_, errorHandler, _ := SearchLogs()
+
+		params := SearchLogsParams{
+			JobLogsBaseParams: JobLogsBaseParams{
+				OrgSlug:      "test-org",
+				PipelineSlug: "test-pipeline",
+				BuildNumber:  "123",
+				JobID:        "job-456",
+			},
+			Pattern: "error",
+		}
+
+		result, _, err := errorHandler(errorCtx, createMCPRequest(t, map[string]any{}), params)
+		assert.NoError(err)
+		textContent := result.Content[0].(*mcp.TextContent)
+		assert.Contains(textContent.Text, "failed to create log reader")
+	})
+}
+
+func TestTailLogsHandler(t *testing.T) {
+	assert := require.New(t)
+
+	mockClient := &MockBuildkiteLogsClient{
+		NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+			return buildkitelogs.NewParquetReader(ctx, "/tmp/test.parquet"), nil
+		},
+	}
+
+	ctx := ContextWithDeps(context.Background(), ToolDependencies{BuildkiteLogsClient: mockClient})
+
+	_, handler, _ := TailLogs()
+
+	t.Run("default tail value", func(t *testing.T) {
+		params := TailLogsParams{
+			JobLogsBaseParams: JobLogsBaseParams{
+				OrgSlug:      "test-org",
+				PipelineSlug: "test-pipeline",
+				BuildNumber:  "123",
+				JobID:        "job-456",
+			},
+			Tail: 0, // Should default to 10
+		}
+
+		// This will fail due to the parquet file not existing, but we can check the parameters
+		result, _, err := handler(ctx, createMCPRequest(t, map[string]any{}), params)
+		assert.NoError(err)
+		textContent := result.Content[0].(*mcp.TextContent)
+		assert.Contains(textContent.Text, "Failed to get file info")
+	})
+}
+
+func TestReadLogsHandler(t *testing.T) {
+	assert := require.New(t)
+
+	mockClient := &MockBuildkiteLogsClient{
+		NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+			return buildkitelogs.NewParquetReader(ctx, "/tmp/test.parquet"), nil
+		},
+	}
+
+	ctx := ContextWithDeps(context.Background(), ToolDependencies{BuildkiteLogsClient: mockClient})
+
+	_, handler, _ := ReadLogs()
+
+	params := ReadLogsParams{
+		JobLogsBaseParams: JobLogsBaseParams{
+			OrgSlug:      "test-org",
+			PipelineSlug: "test-pipeline",
+			BuildNumber:  "123",
+			JobID:        "job-456",
+		},
+		Seek:  0,
+		Limit: 100,
+	}
+
+	// This will fail due to the parquet file not existing, but we can test the flow
+	result, _, err := handler(ctx, createMCPRequest(t, map[string]any{}), params)
+	assert.NoError(err)
+	textContent := result.Content[0].(*mcp.TextContent)
+	assert.Contains(textContent.Text, "Failed to read entries")
+}
+
+func TestNewParquetReader(t *testing.T) {
+	assert := require.New(t)
+	ctx := context.Background()
+
+	t.Run("successful creation", func(t *testing.T) {
+		mockClient := &MockBuildkiteLogsClient{
+			NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+				assert.Equal("test-org", org)
+				assert.Equal("test-pipeline", pipeline)
+				assert.Equal("123", build)
+				assert.Equal("job-456", job)
+				assert.Equal(5*time.Minute, ttl)
+				assert.True(forceRefresh)
+				return buildkitelogs.NewParquetReader(ctx, "/tmp/test.parquet"), nil
+			},
+		}
+
+		params := JobLogsBaseParams{
+			OrgSlug:      "test-org",
+			PipelineSlug: "test-pipeline",
+			BuildNumber:  "123",
+			JobID:        "job-456",
+			CacheTTL:     "5m",
+			ForceRefresh: true,
+		}
+
+		// This will succeed in creating the reader but fail later when trying to read
+		// the non-existent parquet file, but we can verify the client was called correctly
+		reader, err := newParquetReader(ctx, mockClient, params)
+		assert.NoError(err)   // Creation succeeds
+		assert.NotNil(reader) // Reader is created
+	})
+
+	t.Run("client error", func(t *testing.T) {
+		mockClient := &MockBuildkiteLogsClient{
+			NewReaderFunc: func(ctx context.Context, org, pipeline, build, job string, ttl time.Duration, forceRefresh bool) (*buildkitelogs.ParquetReader, error) {
+				return nil, errors.New("download failed")
+			},
+		}
+
+		params := JobLogsBaseParams{
+			OrgSlug:      "test-org",
+			PipelineSlug: "test-pipeline",
+			BuildNumber:  "123",
+			JobID:        "job-456",
+		}
+
+		reader, err := newParquetReader(ctx, mockClient, params)
+		assert.Error(err)
+		assert.Nil(reader)
+		assert.Contains(err.Error(), "failed to create log reader")
+	})
+}
