@@ -143,23 +143,6 @@ The Stripe MCP server (`ent-stripe`) delivers tools from a cloud endpoint (`mcp.
 ## Inter-Rater Agreement
 
 A second independent annotator classified a random sample of 10 state-mutating tools from 3 randomly selected servers using only `RUBRIC.md`. Agreement on the `inverse_type` column was computed prior to any discussion. Results are reported in Section 4.1 of the paper.
-
----
-
-## Citation
-
-If you use this dataset or rubric, please cite:
-
-```bibtex
-@inproceedings{undoMD2026,
-  title     = {Undo.md: Benchmarking and Closing the Reversibility Gap in Agent Skills},
-  booktitle = {Proceedings of the First Workshop on Agent Skills (Agent Skills '26)},
-  year      = {2026},
-  address   = {San Jose, CA},
-  note      = {Non-archival workshop paper},
-}
-```
-
 ---
 
 ## License
