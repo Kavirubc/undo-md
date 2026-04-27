@@ -1,0 +1,479 @@
+server_id,server_name,tool_name,file_path,verb_class,mutates_state,semantically_irreversible,inverse_tool,inverse_type,scope_gated,notes,predicted_inverse_type
+ref-filesystem,filesystem (MCP reference),read_file,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),read_text_file,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),read_media_file,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),read_multiple_files,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),write_file,src/filesystem,other,yes,no,write_file,partial,no,Overwrites file; prior content lost unless caller stored it; write_file can restore if content known,partial
+ref-filesystem,filesystem (MCP reference),edit_file,src/filesystem,update,yes,no,write_file,partial,no,Patch-style edit; prior state not captured by call output,absent
+ref-filesystem,filesystem (MCP reference),create_directory,src/filesystem,create,yes,no,,absent,,No delete_directory tool in server,absent
+ref-filesystem,filesystem (MCP reference),list_directory,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),list_directory_with_sizes,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),directory_tree,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),move_file,src/filesystem,other,yes,no,move_file,partial,no,Can re-invoke with swapped args; prior path not returned,absent
+ref-filesystem,filesystem (MCP reference),search_files,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),get_file_info,src/filesystem,read,no,,,,,,
+ref-filesystem,filesystem (MCP reference),list_allowed_directories,src/filesystem,read,no,,,,,,
+ref-git,git (MCP reference),git_status,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_diff_unstaged,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_diff_staged,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_diff,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_commit,src/git,create,yes,no,git_reset,partial,no,git_reset can undo but requires knowing prior HEAD; output does not return it,absent
+ref-git,git (MCP reference),git_add,src/git,update,yes,no,git_reset,partial,no,Stages files; git_reset unstages but needs file list,absent
+ref-git,git (MCP reference),git_reset,src/git,update,yes,no,git_commit,partial,no,Mixed-mode reset moves HEAD; re-commit restores but loses index state,absent
+ref-git,git (MCP reference),git_log,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_create_branch,src/git,create,yes,no,,absent,,No delete_branch tool in this server,absent
+ref-git,git (MCP reference),git_checkout,src/git,update,yes,no,git_checkout,partial,no,Can checkout prior branch; prior branch name not returned by call,absent
+ref-git,git (MCP reference),git_show,src/git,read,no,,,,,,
+ref-git,git (MCP reference),git_branch,src/git,read,no,,,,,,
+ref-github,github (MCP reference),create_or_update_file,src/github [archived],update,yes,no,,absent,,Creates or overwrites; no explicit delete_file; get_file_contents gives prior content if caller stores it,absent
+ref-github,github (MCP reference),search_repositories,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),create_repository,src/github [archived],create,yes,no,,absent,,No delete_repository tool,absent
+ref-github,github (MCP reference),get_file_contents,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),push_files,src/github [archived],update,yes,no,,absent,,Pushes one or more files; no batch-revert tool,absent
+ref-github,github (MCP reference),create_issue,src/github [archived],create,yes,no,,absent,,No delete_issue; update_issue can close but closure is not deletion,absent
+ref-github,github (MCP reference),create_pull_request,src/github [archived],create,yes,no,,absent,,No close/delete_pr tool in this server,absent
+ref-github,github (MCP reference),fork_repository,src/github [archived],create,yes,no,,absent,,No delete_fork tool,absent
+ref-github,github (MCP reference),create_branch,src/github [archived],create,yes,no,,absent,,No delete_branch tool,absent
+ref-github,github (MCP reference),list_commits,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),list_issues,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),update_issue,src/github [archived],update,yes,no,update_issue,partial,no,Can restore prior field values; prior values not returned by forward call,absent
+ref-github,github (MCP reference),add_issue_comment,src/github [archived],create,yes,yes,,,,Comments visible externally; no delete_comment tool; semantically irreversible,absent
+ref-github,github (MCP reference),get_issue,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),search_code,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),search_issues,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),search_users,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),get_pull_request,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),list_pull_requests,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),create_review,src/github [archived],create,yes,yes,,,,PR review published externally; no retract tool,absent
+ref-github,github (MCP reference),merge_pull_request,src/github [archived],other,yes,yes,,,,Merge is permanent on remote; no unmerge tool,partial
+ref-github,github (MCP reference),get_pull_request_files,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),get_pull_request_status,src/github [archived],read,no,,,,,,
+ref-github,github (MCP reference),update_pull_request_branch,src/github [archived],update,yes,no,,absent,,No revert_branch_update tool,absent
+ref-github,github (MCP reference),add_pull_request_review_comment,src/github [archived],create,yes,yes,,,,Published externally; no delete_comment tool,absent
+ref-gitlab,gitlab (MCP reference),create_or_update_file,src/gitlab [archived],update,yes,no,,absent,,No delete_file tool,absent
+ref-gitlab,gitlab (MCP reference),search_repositories,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),create_repository,src/gitlab [archived],create,yes,no,,absent,,No delete_project tool,absent
+ref-gitlab,gitlab (MCP reference),get_file_contents,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),push_files,src/gitlab [archived],update,yes,no,,absent,,No batch-revert tool,absent
+ref-gitlab,gitlab (MCP reference),create_issue,src/gitlab [archived],create,yes,no,,absent,,No delete_issue tool,absent
+ref-gitlab,gitlab (MCP reference),create_merge_request,src/gitlab [archived],create,yes,no,,absent,,No close/delete_mr tool,absent
+ref-gitlab,gitlab (MCP reference),fork_project,src/gitlab [archived],create,yes,no,,absent,,No delete_fork tool,absent
+ref-gitlab,gitlab (MCP reference),create_branch,src/gitlab [archived],create,yes,no,,absent,,No delete_branch tool,absent
+ref-gitlab,gitlab (MCP reference),list_commits,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),list_issues,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),update_issue,src/gitlab [archived],update,yes,no,update_issue,partial,no,Prior field values not returned,absent
+ref-gitlab,gitlab (MCP reference),create_note,src/gitlab [archived],create,yes,yes,,,,Comment published to external platform,absent
+ref-gitlab,gitlab (MCP reference),list_merge_requests,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),get_merge_request,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),get_merge_request_diffs,src/gitlab [archived],read,no,,,,,,
+ref-gitlab,gitlab (MCP reference),update_merge_request,src/gitlab [archived],update,yes,no,update_merge_request,partial,no,Prior state not captured,absent
+ref-postgres,postgres (MCP reference),query,src/postgres [archived],read,no,,,,,Server is explicitly read-only; no write tools,
+ref-sqlite,sqlite (MCP reference),read_query,src/sqlite [archived],read,no,,,,,,
+ref-sqlite,sqlite (MCP reference),write_query,src/sqlite [archived],update,yes,no,write_query,partial,no,Arbitrary DML; inverse requires knowing prior state,absent
+ref-sqlite,sqlite (MCP reference),create_table,src/sqlite [archived],create,yes,no,,absent,,No drop_table tool exposed,absent
+ref-sqlite,sqlite (MCP reference),list_tables,src/sqlite [archived],read,no,,,,,,
+ref-sqlite,sqlite (MCP reference),describe_table,src/sqlite [archived],read,no,,,,,,
+ref-sqlite,sqlite (MCP reference),append_insight,src/sqlite [archived],create,yes,no,,absent,,No delete_insight; insights memo is append-only,absent
+ref-sqlite,sqlite (MCP reference),list_insights,src/sqlite [archived],read,no,,,,,,
+ref-slack,slack (MCP reference),slack_list_channels,src/slack [archived],read,no,,,,,,
+ref-slack,slack (MCP reference),slack_post_message,src/slack [archived],send,yes,yes,,,,Message delivered to external recipients; no delete_message tool,irrev
+ref-slack,slack (MCP reference),slack_reply_to_thread,src/slack [archived],send,yes,yes,,,,Thread reply delivered externally,irrev
+ref-slack,slack (MCP reference),slack_add_reaction,src/slack [archived],update,yes,no,,absent,,No remove_reaction tool in this server,absent
+ref-slack,slack (MCP reference),slack_get_channel_history,src/slack [archived],read,no,,,,,,
+ref-slack,slack (MCP reference),slack_get_thread_replies,src/slack [archived],read,no,,,,,,
+ref-slack,slack (MCP reference),slack_get_users,src/slack [archived],read,no,,,,,,
+ref-slack,slack (MCP reference),slack_get_user_profile,src/slack [archived],read,no,,,,,,
+ref-gdrive,google-drive (MCP reference),search,src/gdrive [archived],read,no,,,,,,
+ref-gdrive,google-drive (MCP reference),read_file,src/gdrive [archived],read,no,,,,,,
+ref-sentry,sentry (MCP reference),get_sentry_issue,src/sentry [archived],read,no,,,,,,
+ref-sentry,sentry (MCP reference),list_sentry_issues,src/sentry [archived],read,no,,,,,,
+ref-sentry,sentry (MCP reference),update_sentry_issue,src/sentry [archived],update,yes,no,update_sentry_issue,partial,no,Can restore status; prior status not captured in output,absent
+ref-sentry,sentry (MCP reference),create_sentry_issue,src/sentry [archived],create,yes,no,,absent,,No delete tool; Sentry issues linger externally,absent
+ref-memory,memory (MCP reference),create_entities,src/memory,create,yes,no,delete_entities,exact,no,delete_entities accepts entity names returned by create_entities,exact
+ref-memory,memory (MCP reference),add_observations,src/memory,create,yes,no,delete_observations,exact,no,delete_observations mirrors add_observations exactly,exact
+ref-memory,memory (MCP reference),create_relations,src/memory,create,yes,no,delete_relations,exact,no,delete_relations mirrors create_relations,exact
+ref-memory,memory (MCP reference),delete_entities,src/memory,delete,yes,no,create_entities,exact,no,,partial
+ref-memory,memory (MCP reference),delete_observations,src/memory,delete,yes,no,add_observations,exact,no,,absent
+ref-memory,memory (MCP reference),delete_relations,src/memory,delete,yes,no,create_relations,exact,no,,partial
+ref-memory,memory (MCP reference),open_nodes,src/memory,other,no,,,,,,
+ref-memory,memory (MCP reference),read_graph,src/memory,read,no,,,,,,
+ref-memory,memory (MCP reference),search_nodes,src/memory,read,no,,,,,,
+com-kubernetes,kubernetes,exec_in_pod,src/tools,other,yes,yes,,,,Arbitrary command execution; downstream effects outside server control,absent
+com-kubernetes,kubernetes,install_helm_chart,src/tools,create,yes,no,uninstall_helm_chart,exact,no,uninstall_helm_chart cleanly removes the release by name,exact
+com-kubernetes,kubernetes,upgrade_helm_chart,src/tools,update,yes,no,,partial,no,No downgrade tool; rollback requires helm CLI; upgrade_helm_chart can re-apply old chart version if caller tracks it,absent
+com-kubernetes,kubernetes,uninstall_helm_chart,src/tools,delete,yes,no,install_helm_chart,partial,no,Reinstall requires original values; not captured in output,partial
+com-kubernetes,kubernetes,kubectl_apply,src/tools,update,yes,no,kubectl_delete,partial,no,apply is declarative; delete removes but prior manifest not returned,absent
+com-kubernetes,kubernetes,kubectl_context,src/tools,update,yes,no,kubectl_context,partial,no,Sets active context; prior context not returned by call,absent
+com-kubernetes,kubernetes,kubectl_create,src/tools,create,yes,no,kubectl_delete,exact,no,kubectl_delete accepts the same resource type/name,exact
+com-kubernetes,kubernetes,kubectl_delete,src/tools,delete,yes,no,kubectl_create,partial,no,Re-creation requires original manifest; not returned by delete call,partial
+com-kubernetes,kubernetes,kubectl_describe,src/tools,read,no,,,,,,
+com-kubernetes,kubernetes,kubectl_generic,src/tools,other,yes,yes,,,,Passes arbitrary kubectl commands; effects unknown statically,partial
+com-kubernetes,kubernetes,kubectl_get,src/tools,read,no,,,,,,
+com-kubernetes,kubernetes,kubectl_logs,src/tools,read,no,,,,,,
+com-kubernetes,kubernetes,kubectl_patch,src/tools,update,yes,no,kubectl_patch,partial,no,Prior field values not captured in output,absent
+com-kubernetes,kubernetes,kubectl_reconnect,src/tools,other,yes,no,kubectl_reconnect,partial,no,Re-issue to reconnect; connection state is transient,absent
+com-kubernetes,kubernetes,kubectl_rollout,src/tools,other,yes,no,kubectl_rollout,partial,no,Can rollout undo but requires knowing prior revision,partial
+com-kubernetes,kubernetes,kubectl_scale,src/tools,update,yes,no,kubectl_scale,partial,no,Can restore replicas if prior count stored; not returned,absent
+com-kubernetes,kubernetes,node_management,src/tools,other,yes,no,node_management,partial,no,Cordon/uncordon pairs; prior state not returned,absent
+com-kubernetes,kubernetes,ping,src/tools,read,no,,,,,,
+com-kubernetes,kubernetes,port_forward,src/tools,create,yes,no,stop_port_forward,exact,no,stop_port_forward terminates the exact forwarding session,absent
+com-kubernetes,kubernetes,stop_port_forward,src/tools,delete,yes,no,port_forward,exact,no,,absent
+com-kubernetes,kubernetes,explain_resource,src/tools,read,no,,,,,,
+com-kubernetes,kubernetes,list_api_resources,src/tools,read,no,,,,,,
+com-docker,docker,list_containers,src/mcp_server_docker,read,no,,,,,,
+com-docker,docker,create_container,src/mcp_server_docker,create,yes,no,remove_container,exact,no,remove_container accepts container name/id from create output,absent
+com-docker,docker,run_container,src/mcp_server_docker,create,yes,no,stop_container,partial,no,"run starts+creates; stop only halts, does not remove; full inverse is stop+remove",absent
+com-docker,docker,recreate_container,src/mcp_server_docker,update,yes,no,,absent,,No explicit rollback to prior container config,absent
+com-docker,docker,start_container,src/mcp_server_docker,update,yes,no,stop_container,exact,no,,partial
+com-docker,docker,fetch_container_logs,src/mcp_server_docker,read,no,,,,,,
+com-docker,docker,stop_container,src/mcp_server_docker,update,yes,no,start_container,exact,no,,partial
+com-docker,docker,remove_container,src/mcp_server_docker,delete,yes,no,create_container,partial,no,Restore requires original image + config; not captured,partial
+com-docker,docker,list_images,src/mcp_server_docker,read,no,,,,,,
+com-docker,docker,pull_image,src/mcp_server_docker,create,yes,no,remove_image,exact,no,pull downloads locally; remove_image deletes local copy,absent
+com-docker,docker,push_image,src/mcp_server_docker,send,yes,yes,,,,Image pushed to remote registry; cannot unpush,irrev
+com-docker,docker,build_image,src/mcp_server_docker,create,yes,no,remove_image,exact,no,,absent
+com-docker,docker,remove_image,src/mcp_server_docker,delete,yes,no,pull_image,partial,no,pull_image can restore from registry if tag known,absent
+com-docker,docker,list_networks,src/mcp_server_docker,read,no,,,,,,
+com-docker,docker,create_network,src/mcp_server_docker,create,yes,no,remove_network,exact,no,,absent
+com-docker,docker,remove_network,src/mcp_server_docker,delete,yes,no,create_network,exact,no,Re-creation by same name with same driver is exact,partial
+com-docker,docker,list_volumes,src/mcp_server_docker,read,no,,,,,,
+com-docker,docker,create_volume,src/mcp_server_docker,create,yes,no,remove_volume,exact,no,,absent
+com-docker,docker,remove_volume,src/mcp_server_docker,delete,yes,no,create_volume,partial,no,Volume data lost; create_volume restores empty volume only,partial
+com-docker,docker,docker_compose,src/mcp_server_docker,other,yes,no,,absent,,Wraps compose commands; no inverse exposed,absent
+com-aws,aws,s3_bucket_create,src/mcp_server_aws,create,yes,no,s3_bucket_delete,exact,no,,exact
+com-aws,aws,s3_bucket_delete,src/mcp_server_aws,delete,yes,no,s3_bucket_create,partial,no,Requires original config; data inside bucket is also deleted,partial
+com-aws,aws,s3_bucket_list,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,s3_object_upload,src/mcp_server_aws,create,yes,no,s3_object_delete,exact,no,,exact
+com-aws,aws,s3_object_read,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,s3_object_list,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,s3_object_delete,src/mcp_server_aws,delete,yes,no,s3_object_upload,partial,no,Content must be known to caller; not returned by delete,absent
+com-aws,aws,dynamodb_table_create,src/mcp_server_aws,create,yes,no,dynamodb_table_delete,exact,no,Table schema is returned on creation,exact
+com-aws,aws,dynamodb_table_delete,src/mcp_server_aws,delete,yes,no,dynamodb_table_create,partial,no,Table + all data gone; schema must be known ahead of time,partial
+com-aws,aws,dynamodb_table_list,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_table_describe,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_table_update,src/mcp_server_aws,update,yes,no,dynamodb_table_update,partial,no,Prior throughput/config not captured in output,absent
+com-aws,aws,dynamodb_item_put,src/mcp_server_aws,create,yes,no,dynamodb_item_delete,exact,no,Delete by same key is exact inverse,exact
+com-aws,aws,dynamodb_item_get,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_item_query,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_item_scan,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_item_update,src/mcp_server_aws,update,yes,no,dynamodb_item_update,partial,no,Prior attribute values not returned,absent
+com-aws,aws,dynamodb_item_delete,src/mcp_server_aws,delete,yes,no,dynamodb_item_put,partial,no,Item content must be stored before delete,absent
+com-aws,aws,dynamodb_item_batch_write,src/mcp_server_aws,other,yes,no,dynamodb_item_batch_write,partial,no,Batch puts/deletes; prior state not captured,partial
+com-aws,aws,dynamodb_batch_get,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_describe_ttl,src/mcp_server_aws,read,no,,,,,,
+com-aws,aws,dynamodb_update_ttl,src/mcp_server_aws,update,yes,no,dynamodb_update_ttl,partial,no,Prior TTL setting not returned,absent
+com-aws,aws,dynamodb_batch_execute,src/mcp_server_aws,other,yes,no,,absent,,Arbitrary PartiQL; inverse depends on statement content,partial
+com-terraform,terraform (tfmcp),init_terraform,src/mcp,other,yes,no,,absent,,Initialises local .terraform dir; no undo tool; sampled,partial
+com-terraform,terraform (tfmcp),get_terraform_plan,src/mcp,read,no,,,,,Generates plan without applying; read-only,
+com-terraform,terraform (tfmcp),apply_terraform,src/mcp,update,yes,no,,absent,,No destroy/rollback tool in server; sampled,absent
+com-terraform,terraform (tfmcp),validate_terraform,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),get_terraform_state,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),set_terraform_directory,src/mcp,update,yes,no,set_terraform_directory,partial,no,Prior directory not returned by call; sampled,absent
+com-terraform,terraform (tfmcp),terraform_workspace,src/mcp,update,yes,no,terraform_workspace,partial,no,Can switch back; prior workspace name not returned; sampled,absent
+com-terraform,terraform (tfmcp),terraform_fmt,src/mcp,update,yes,no,,absent,,Reformats files in place; no revert tool; sampled,absent
+com-terraform,terraform (tfmcp),terraform_import,src/mcp,create,yes,no,,absent,,Imports resource into state; no remove-from-state tool exposed; sampled,absent
+com-terraform,terraform (tfmcp),terraform_taint,src/mcp,update,yes,no,terraform_refresh,partial,no,Taint marks resource; refresh may clear; not exact; sampled,absent
+com-terraform,terraform (tfmcp),terraform_refresh,src/mcp,update,yes,no,,absent,,Refreshes remote state; no undo; sampled,absent
+com-terraform,terraform (tfmcp),terraform_providers,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),terraform_output,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),terraform_graph,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),search_terraform_providers,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),get_provider_info,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),search_terraform_modules,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),analyze_terraform,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),analyze_plan,src/mcp,read,no,,,,,,
+com-terraform,terraform (tfmcp),get_security_status,src/mcp,read,no,,,,,,
+com-atlassian,atlassian (jira/confluence),create_issue,src/mcp_atlassian/servers,create,yes,no,delete_issue,exact,no,delete_issue accepts issue key from create output; sampled,exact
+com-atlassian,atlassian (jira/confluence),update_issue,src/mcp_atlassian/servers,update,yes,no,update_issue,partial,no,Prior field values not returned; sampled,absent
+com-atlassian,atlassian (jira/confluence),delete_issue,src/mcp_atlassian/servers,delete,yes,no,create_issue,partial,no,Content must be stored before deletion; sampled,partial
+com-atlassian,atlassian (jira/confluence),get_issue,src/mcp_atlassian/servers,read,no,,,,,sampled,
+com-atlassian,atlassian (jira/confluence),search,src/mcp_atlassian/servers,read,no,,,,,JQL search; sampled,
+com-atlassian,atlassian (jira/confluence),add_comment,src/mcp_atlassian/servers,create,yes,yes,,,,Comment visible externally; no delete_comment exposed; sampled,absent
+com-atlassian,atlassian (jira/confluence),transition_issue,src/mcp_atlassian/servers,other,yes,no,transition_issue,partial,no,Can transition back if prior status known; not returned; sampled,partial
+com-atlassian,atlassian (jira/confluence),create_sprint,src/mcp_atlassian/servers,create,yes,no,,absent,,No delete_sprint tool; sampled,absent
+com-atlassian,atlassian (jira/confluence),add_issues_to_sprint,src/mcp_atlassian/servers,update,yes,no,,absent,,No remove_issues_from_sprint tool; sampled,exact
+com-atlassian,atlassian (jira/confluence),add_watcher,src/mcp_atlassian/servers,update,yes,no,remove_watcher,exact,no,remove_watcher accepts same user; sampled,absent
+com-atlassian,atlassian (jira/confluence),remove_watcher,src/mcp_atlassian/servers,delete,yes,no,add_watcher,exact,no,sampled,absent
+com-atlassian,atlassian (jira/confluence),add_worklog,src/mcp_atlassian/servers,create,yes,no,,absent,,No delete_worklog tool; sampled,absent
+com-atlassian,atlassian (jira/confluence),create_page,src/mcp_atlassian/servers,create,yes,no,delete_page,exact,no,delete_page accepts page ID from create; sampled,exact
+com-atlassian,atlassian (jira/confluence),update_page,src/mcp_atlassian/servers,update,yes,no,update_page,partial,no,Prior page content not returned; sampled,absent
+com-atlassian,atlassian (jira/confluence),delete_page,src/mcp_atlassian/servers,delete,yes,no,create_page,partial,no,Content must be stored before deletion; sampled,partial
+com-atlassian,atlassian (jira/confluence),add_label,src/mcp_atlassian/servers,update,yes,no,,absent,,No remove_label tool exposed; sampled,absent
+com-atlassian,atlassian (jira/confluence),upload_attachment,src/mcp_atlassian/servers,create,yes,no,delete_attachment,exact,no,delete_attachment accepts attachment ID from upload; sampled,exact
+com-atlassian,atlassian (jira/confluence),delete_attachment,src/mcp_atlassian/servers,delete,yes,no,upload_attachment,partial,no,File content must be stored; sampled,absent
+com-atlassian,atlassian (jira/confluence),move_page,src/mcp_atlassian/servers,update,yes,no,move_page,partial,no,Prior parent not returned; sampled,absent
+com-atlassian,atlassian (jira/confluence),get_page,src/mcp_atlassian/servers,read,no,,,,,sampled,
+com-linear,linear,linear_create_issue,.,create,yes,no,,absent,,No delete_issue tool in this server,absent
+com-linear,linear,linear_update_issue,.,update,yes,no,linear_update_issue,partial,no,Prior field values not returned,absent
+com-linear,linear,linear_search_issues,.,read,no,,,,,,
+com-linear,linear,linear_get_user_issues,.,read,no,,,,,,
+com-linear,linear,linear_add_comment,.,create,yes,yes,,,,Comment visible to team members externally; no delete_comment tool,absent
+com-notion,notion,notion_create_database,src,create,yes,no,,absent,,No delete_database tool,absent
+com-notion,notion,notion_create_database_item,src,create,yes,no,notion_delete_block,partial,no,Database items are blocks; delete_block accepts block ID,absent
+com-notion,notion,notion_update_database,src,update,yes,no,notion_update_database,partial,no,Prior schema not returned,absent
+com-notion,notion,notion_query_database,src,read,no,,,,,,
+com-notion,notion,notion_retrieve_database,src,read,no,,,,,,
+com-notion,notion,notion_retrieve_page,src,read,no,,,,,,
+com-notion,notion,notion_update_page_properties,src,update,yes,no,notion_update_page_properties,partial,no,Prior property values not returned,absent
+com-notion,notion,notion_retrieve_block,src,read,no,,,,,,
+com-notion,notion,notion_retrieve_block_children,src,read,no,,,,,,
+com-notion,notion,notion_append_block_children,src,create,yes,no,notion_delete_block,partial,no,delete_block removes by block ID; prior order not captured,absent
+com-notion,notion,notion_update_block,src,update,yes,no,notion_update_block,partial,no,Prior content not returned,absent
+com-notion,notion,notion_delete_block,src,delete,yes,no,notion_append_block_children,partial,no,Content must be stored before deletion,absent
+com-notion,notion,notion_create_comment,src,create,yes,yes,,,,Comment published externally; no delete_comment tool,absent
+com-notion,notion,notion_retrieve_comments,src,read,no,,,,,,
+com-notion,notion,notion_search,src,read,no,,,,,,
+com-notion,notion,notion_list_all_users,src,read,no,,,,,,
+com-notion,notion,notion_retrieve_user,src,read,no,,,,,,
+com-notion,notion,notion_retrieve_bot_user,src,read,no,,,,,,
+com-figma,figma,get_figma_data,src/mcp/tools,read,no,,,,,,
+com-figma,figma,download_figma_images,src/mcp/tools,read,no,,,,,Downloads images to local disk; does not mutate Figma state,
+com-playwright,playwright,browser_navigate,.,update,yes,no,browser_navigate_back,partial,no,navigate_back restores but URL must be inferred; sampled,absent
+com-playwright,playwright,browser_navigate_back,.,update,yes,no,browser_navigate,partial,no,sampled,absent
+com-playwright,playwright,browser_click,.,update,yes,yes,,,,"Click may trigger external action (form submit, purchase); sampled",absent
+com-playwright,playwright,browser_fill_form,.,update,yes,no,browser_fill_form,partial,no,Can clear form; prior values not captured; sampled,absent
+com-playwright,playwright,browser_type,.,update,yes,no,,absent,,No clear/delete input tool in this server; sampled,absent
+com-playwright,playwright,browser_press_key,.,update,yes,yes,,,,Keystroke side effects are unknown statically; sampled,absent
+com-playwright,playwright,browser_select_option,.,update,yes,no,browser_select_option,partial,no,Prior selection not returned; sampled,absent
+com-playwright,playwright,browser_snapshot,.,read,no,,,,,Returns accessibility tree; sampled,
+com-playwright,playwright,browser_take_screenshot,.,read,no,,,,,sampled,
+com-playwright,playwright,browser_evaluate,.,other,yes,yes,,,,Executes arbitrary JS; side effects unknown; sampled,partial
+com-playwright,playwright,browser_file_upload,.,update,yes,yes,,,,Uploads file to external form; side effects outside control; sampled,absent
+com-playwright,playwright,browser_handle_dialog,.,update,yes,no,,absent,,Dismisses/accepts dialog; no re-show tool; sampled,absent
+com-playwright,playwright,browser_cookie_set,.,create,yes,no,browser_cookie_delete,exact,no,delete_cookie accepts same name/domain; sampled,absent
+com-playwright,playwright,browser_cookie_delete,.,delete,yes,no,browser_cookie_set,exact,no,sampled,absent
+com-playwright,playwright,browser_cookie_clear,.,delete,yes,no,,absent,,Clears all cookies; no restore tool; sampled,absent
+com-playwright,playwright,browser_localstorage_set,.,create,yes,no,browser_localstorage_delete,exact,no,sampled,absent
+com-playwright,playwright,browser_localstorage_delete,.,delete,yes,no,browser_localstorage_set,exact,no,sampled,absent
+com-playwright,playwright,browser_localstorage_clear,.,delete,yes,no,,absent,,Clears all storage; no restore; sampled,absent
+com-playwright,playwright,browser_tabs,.,read,no,,,,,Lists tabs; sampled,
+com-playwright,playwright,browser_close,.,delete,yes,no,,absent,,Closes browser context; no reopen tool; sampled,absent
+com-exa,exa search,web_search_exa,src,read,no,,,,,,
+com-exa,exa search,web_search_advanced_exa,src,read,no,,,,,,
+com-exa,exa search,web_fetch_exa,src,read,no,,,,,,
+com-exa,exa search,get_code_context_exa,src,read,no,,,,,Deprecated; still registered for compat,
+com-exa,exa search,company_research_exa,src,read,no,,,,,Deprecated,
+com-exa,exa search,people_search_exa,src,read,no,,,,,Deprecated,
+com-exa,exa search,linkedin_search_exa,src,read,no,,,,,Deprecated,
+com-exa,exa search,deep_search_exa,src,read,no,,,,,Deprecated,
+com-exa,exa search,deep_researcher_start,src,other,no,,,,,Deprecated; initiates research but result is ephemeral,
+com-exa,exa search,deep_researcher_check,src,read,no,,,,,Deprecated; polls research status,
+ent-cloudflare,cloudflare,create_url_scan,.,create,yes,no,,absent,,Initiates scan; no delete_scan tool; scan report persists,absent
+ent-cloudflare,cloudflare,get_url_scan,.,read,no,,,,,,
+ent-cloudflare,cloudflare,search_url_scans,.,read,no,,,,,,
+ent-cloudflare,cloudflare,d1_database_create,.,create,yes,no,d1_database_delete,exact,no,delete accepts database ID from create,exact
+ent-cloudflare,cloudflare,d1_database_delete,.,delete,yes,no,d1_database_create,partial,no,Schema and data lost; need original config,partial
+ent-cloudflare,cloudflare,d1_database_get,.,read,no,,,,,,
+ent-cloudflare,cloudflare,d1_databases_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,d1_database_query,.,other,yes,no,,absent,,Arbitrary SQL; inverse depends on query content,partial
+ent-cloudflare,cloudflare,r2_bucket_create,.,create,yes,no,r2_bucket_delete,exact,no,,exact
+ent-cloudflare,cloudflare,r2_bucket_delete,.,delete,yes,no,r2_bucket_create,partial,no,Data inside bucket also deleted,partial
+ent-cloudflare,cloudflare,r2_buckets_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,r2_bucket_get,.,read,no,,,,,,
+ent-cloudflare,cloudflare,set_active_account,.,update,yes,no,set_active_account,partial,no,Prior account ID not returned by call,absent
+ent-cloudflare,cloudflare,container_initialize,.,create,yes,no,,absent,,No terminate_container tool exposed,absent
+ent-cloudflare,cloudflare,container_file_write,.,update,yes,no,container_file_delete,partial,no,Prior content not returned,absent
+ent-cloudflare,cloudflare,container_file_delete,.,delete,yes,no,container_file_write,partial,no,Content must be stored before delete,absent
+ent-cloudflare,cloudflare,container_file_read,.,read,no,,,,,,
+ent-cloudflare,cloudflare,container_files_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,container_exec,.,other,yes,yes,,,,Arbitrary command in container; downstream effects unknown,partial
+ent-cloudflare,cloudflare,container_ping,.,read,no,,,,,,
+ent-cloudflare,cloudflare,get_url_html_content,.,read,no,,,,,,
+ent-cloudflare,cloudflare,get_url_markdown,.,read,no,,,,,,
+ent-cloudflare,cloudflare,search_cloudflare_documentation,.,read,no,,,,,,
+ent-cloudflare,cloudflare,workers_get_worker,.,read,no,,,,,,
+ent-cloudflare,cloudflare,workers_get_worker_code,.,read,no,,,,,,
+ent-cloudflare,cloudflare,workers_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,accounts_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,zones_list,.,read,no,,,,,,
+ent-cloudflare,cloudflare,show_account_dns_settings,.,read,no,,,,,,
+ent-cloudflare,cloudflare,show_zone_dns_settings,.,read,no,,,,,,
+ent-stripe,stripe (agent toolkit),customers_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,,absent,,No delete_customer tool exposed; scope: write; sampled,absent
+ent-stripe,stripe (agent toolkit),customers_list,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],read,no,,,,,sampled,
+ent-stripe,stripe (agent toolkit),customers_retrieve,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],read,no,,,,,sampled,
+ent-stripe,stripe (agent toolkit),customers_update,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,no,customers_update,partial,no,Prior field values not returned; sampled,absent
+ent-stripe,stripe (agent toolkit),payment_intents_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,payment_intents_cancel,exact,no,cancel voids uncaptured intent; sampled,absent
+ent-stripe,stripe (agent toolkit),payment_intents_retrieve,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],read,no,,,,,sampled,
+ent-stripe,stripe (agent toolkit),payment_intents_confirm,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,no,payment_intents_cancel,partial,no,Confirmed intent can be cancelled before capture only; sampled,absent
+ent-stripe,stripe (agent toolkit),payment_intents_cancel,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],delete,yes,no,payment_intents_create,partial,no,Recreating requires same params; sampled,partial
+ent-stripe,stripe (agent toolkit),payment_intents_capture,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,yes,,,,Funds captured from customer; refund is separate action; sampled,irrev
+ent-stripe,stripe (agent toolkit),subscriptions_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,subscriptions_cancel,exact,no,cancel ends subscription; sampled,absent
+ent-stripe,stripe (agent toolkit),subscriptions_cancel,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],delete,yes,no,subscriptions_create,partial,no,Requires original plan params to recreate; sampled,partial
+ent-stripe,stripe (agent toolkit),subscriptions_update,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,no,subscriptions_update,partial,no,Prior plan details not returned; sampled,absent
+ent-stripe,stripe (agent toolkit),invoices_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,invoices_void_invoice,exact,no,void marks invoice uncollectible; sampled,absent
+ent-stripe,stripe (agent toolkit),invoices_finalize_invoice,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,no,invoices_void_invoice,exact,no,void reverses finalization; sampled,irrev
+ent-stripe,stripe (agent toolkit),invoices_pay,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,yes,,,,Payment settled with counterparty; sampled,irrev
+ent-stripe,stripe (agent toolkit),invoices_void_invoice,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],update,yes,no,,absent,,Void is terminal; no re-open tool; sampled,irrev
+ent-stripe,stripe (agent toolkit),refunds_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,yes,,,,Refund issued to customer; cannot be reversed; sampled,absent
+ent-stripe,stripe (agent toolkit),products_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,,absent,,No delete_product tool; sampled,absent
+ent-stripe,stripe (agent toolkit),prices_create,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],create,yes,no,,absent,,No delete_price tool; sampled,absent
+ent-stripe,stripe (agent toolkit),balance_retrieve,tools/modelcontextprotocol [cloud proxy → mcp.stripe.com],read,no,,,,,sampled,
+ent-grafana,grafana,create_annotation,tools,create,yes,no,,absent,,No delete_annotation tool; sampled,absent
+ent-grafana,grafana,update_annotation,tools,update,yes,no,update_annotation,partial,no,Prior annotation content not returned; sampled,absent
+ent-grafana,grafana,create_folder,tools,create,yes,no,,absent,,No delete_folder tool exposed in write set; sampled,absent
+ent-grafana,grafana,search_dashboards,tools,read,no,,,,,sampled,
+ent-grafana,grafana,search_folders,tools,read,no,,,,,sampled,
+ent-grafana,grafana,get_dashboard_by_uid,tools,read,no,,,,,sampled,
+ent-grafana,grafana,update_dashboard,tools,update,yes,no,update_dashboard,partial,no,Prior dashboard JSON not returned; sampled,absent
+ent-grafana,grafana,create_incident,tools,create,yes,no,,absent,,No delete_incident tool; sampled,absent
+ent-grafana,grafana,list_incidents,tools,read,no,,,,,sampled,
+ent-grafana,grafana,get_incident,tools,read,no,,,,,sampled,
+ent-grafana,grafana,add_activity_to_incident,tools,create,yes,yes,,,,Activity log published externally; no delete_activity; sampled,absent
+ent-grafana,grafana,create_contact_point,tools,create,yes,no,,absent,,No delete_contact_point tool; sampled,absent
+ent-grafana,grafana,get_contact_points,tools,read,no,,,,,sampled,
+ent-grafana,grafana,list_datasources,tools,read,no,,,,,sampled,
+ent-grafana,grafana,get_datasource,tools,read,no,,,,,sampled,
+ent-grafana,grafana,query_prometheus,tools,read,no,,,,,Executes PromQL read query; sampled,
+ent-grafana,grafana,query_loki_logs,tools,read,no,,,,,sampled,
+ent-grafana,grafana,run_panel_query,tools,read,no,,,,,Executes panel datasource query; sampled,
+ent-grafana,grafana,search_logs,tools,read,no,,,,,sampled,
+ent-grafana,grafana,list_alert_groups,tools,read,no,,,,,sampled,
+ent-elasticsearch,elasticsearch,list_indices,src/servers/elasticsearch,read,no,,,,,,
+ent-elasticsearch,elasticsearch,get_mappings,src/servers/elasticsearch,read,no,,,,,,
+ent-elasticsearch,elasticsearch,search,src/servers/elasticsearch,read,no,,,,,,
+ent-elasticsearch,elasticsearch,esql,src/servers/elasticsearch,read,no,,,,,ES|QL query; read-only analytics language,
+ent-elasticsearch,elasticsearch,get_shards,src/servers/elasticsearch,read,no,,,,,,
+ent-pinecone,pinecone,list-indexes,src/tools,read,no,,,,,,
+ent-pinecone,pinecone,describe-index,src/tools,read,no,,,,,,
+ent-pinecone,pinecone,describe-index-stats,src/tools,read,no,,,,,,
+ent-pinecone,pinecone,create-index-for-model,src/tools,create,yes,no,,absent,,No delete-index tool in this server,absent
+ent-pinecone,pinecone,search-records,src/tools,read,no,,,,,,
+ent-pinecone,pinecone,cascading-search,src/tools,read,no,,,,,,
+ent-pinecone,pinecone,upsert-records,src/tools,create,yes,no,,absent,,No delete-records tool in server; upsert idempotent but prior values lost on overwrite,absent
+ent-pinecone,pinecone,rerank-documents,src/tools,read,no,,,,,Stateless reranking; no side effects,
+ent-pinecone,pinecone,search-docs,src/tools,read,no,,,,,,
+ent-mongodb,mongodb,find,.,read,no,,,,,,
+ent-mongodb,mongodb,count,.,read,no,,,,,,
+ent-mongodb,mongodb,aggregate,.,read,no,,,,,Aggregation pipeline; read-only by design,
+ent-mongodb,mongodb,insert-many,.,create,yes,no,delete-many,partial,no,delete-many requires filter; inserted IDs are returned so caller can target them,exact
+ent-mongodb,mongodb,update-many,.,update,yes,no,update-many,partial,no,Prior field values not captured,absent
+ent-mongodb,mongodb,delete-many,.,delete,yes,no,insert-many,partial,no,Deleted documents not returned,absent
+ent-mongodb,mongodb,create-index,.,create,yes,no,,absent,,No drop-index tool exposed,absent
+ent-mongodb,mongodb,drop-collection,.,delete,yes,no,,absent,,No create-collection tool; all data lost,absent
+ent-mongodb,mongodb,list-databases,.,read,no,,,,,,
+ent-mongodb,mongodb,collection-schema,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-create-project,.,create,yes,no,,absent,,No delete-project tool,absent
+ent-mongodb,mongodb,atlas-create-free-cluster,.,create,yes,no,,absent,,No delete-cluster tool,absent
+ent-mongodb,mongodb,atlas-create-db-user,.,create,yes,no,,absent,,No delete-db-user tool,absent
+ent-mongodb,mongodb,atlas-create-access-list,.,create,yes,no,,absent,,No delete-access-list tool,absent
+ent-mongodb,mongodb,atlas-list-projects,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-list-clusters,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-list-db-users,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-inspect-cluster,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-inspect-access-list,.,read,no,,,,,,
+ent-mongodb,mongodb,atlas-list-alerts,.,read,no,,,,,,
+ent-neon,neon,list_organizations,.,read,no,,,,,,
+ent-neon,neon,list_projects,.,read,no,,,,,,
+ent-neon,neon,describe_project,.,read,no,,,,,,
+ent-neon,neon,create_project,.,create,yes,no,delete_project,exact,no,delete_project accepts project_id from create output,exact
+ent-neon,neon,delete_project,.,delete,yes,no,create_project,partial,no,Project data lost; name/config must be stored,partial
+ent-neon,neon,describe_branch,.,read,no,,,,,,
+ent-neon,neon,create_branch,.,create,yes,no,delete_branch,exact,no,delete_branch accepts branch_id from create,exact
+ent-neon,neon,delete_branch,.,delete,yes,no,create_branch,partial,no,Branch data/schema gone,partial
+ent-neon,neon,reset_from_parent,.,update,yes,no,,absent,,No re-sync tool; destructive to branch,absent
+ent-neon,neon,get_connection_string,.,read,no,,,,,,
+ent-neon,neon,run_sql,.,update,yes,no,run_sql,partial,no,Arbitrary DML; inverse requires knowing prior state,absent
+ent-neon,neon,run_sql_transaction,.,update,yes,no,run_sql_transaction,partial,no,Same as run_sql; transactional wrapper,absent
+ent-neon,neon,get_database_tables,.,read,no,,,,,,
+ent-neon,neon,describe_table_schema,.,read,no,,,,,,
+ent-neon,neon,prepare_database_migration,.,read,no,,,,,Generates migration DDL without executing,
+ent-neon,neon,complete_database_migration,.,update,yes,no,run_sql,partial,no,Applies migration; reversal requires manual rollback SQL,absent
+ent-neon,neon,compare_database_schema,.,read,no,,,,,,
+ent-neon,neon,provision_neon_auth,.,create,yes,no,,absent,,No deprovision tool,absent
+ent-neon,neon,provision_neon_data_api,.,create,yes,no,,absent,,No deprovision tool,absent
+ent-neon,neon,list_branch_computes,.,read,no,,,,,,
+ent-neon,neon,explain_sql_statement,.,read,no,,,,,,
+ent-neon,neon,prepare_query_tuning,.,read,no,,,,,,
+ent-neon,neon,complete_query_tuning,.,update,yes,no,run_sql,partial,no,Applies index/config changes; no dedicated rollback,absent
+ent-neon,neon,list_slow_queries,.,read,no,,,,,,
+ent-neon,neon,fetch,.,read,no,,,,,,
+ent-neon,neon,search,.,read,no,,,,,,
+ent-neon,neon,list_docs_resources,.,read,no,,,,,,
+ent-neon,neon,get_doc_resource,.,read,no,,,,,,
+ent-neon,neon,list_shared_projects,.,read,no,,,,,,
+ent-supabase,supabase,list_organizations,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,list_projects,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_project,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_project_url,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_organization,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,create_project,packages/mcp-server-supabase/src,create,yes,no,,absent,,No delete_project tool,absent
+ent-supabase,supabase,pause_project,packages/mcp-server-supabase/src,update,yes,no,restore_project,exact,no,restore_project resumes paused project,absent
+ent-supabase,supabase,restore_project,packages/mcp-server-supabase/src,update,yes,no,pause_project,exact,no,,absent
+ent-supabase,supabase,list_tables,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,list_extensions,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,list_migrations,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,apply_migration,packages/mcp-server-supabase/src,update,yes,no,,absent,,No rollback_migration tool; destructive if schema change,absent
+ent-supabase,supabase,execute_sql,packages/mcp-server-supabase/src,update,yes,no,execute_sql,partial,no,Arbitrary SQL; inverse depends on statement,absent
+ent-supabase,supabase,get_logs,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_advisors,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,generate_typescript_types,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,list_branches,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,create_branch,packages/mcp-server-supabase/src,create,yes,no,delete_branch,exact,no,,exact
+ent-supabase,supabase,delete_branch,packages/mcp-server-supabase/src,delete,yes,no,create_branch,partial,no,,partial
+ent-supabase,supabase,merge_branch,packages/mcp-server-supabase/src,update,yes,no,,absent,,No unmerge tool,absent
+ent-supabase,supabase,rebase_branch,packages/mcp-server-supabase/src,update,yes,no,,absent,,No undo-rebase tool,absent
+ent-supabase,supabase,reset_branch,packages/mcp-server-supabase/src,update,yes,no,,absent,,Destructive; no undo tool,absent
+ent-supabase,supabase,list_edge_functions,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_edge_function,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,deploy_edge_function,packages/mcp-server-supabase/src,create,yes,no,,absent,,No delete/undeploy tool,absent
+ent-supabase,supabase,list_storage_buckets,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_storage_config,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,update_storage_config,packages/mcp-server-supabase/src,update,yes,no,update_storage_config,partial,no,Prior config not returned,absent
+ent-supabase,supabase,get_publishable_keys,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,get_cost,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-supabase,supabase,confirm_cost,packages/mcp-server-supabase/src,update,yes,no,,absent,,Initiates billable operation; no cancel tool,absent
+ent-supabase,supabase,search_docs,packages/mcp-server-supabase/src,read,no,,,,,,
+ent-cloudinary,cloudinary,search-assets,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,visual-search-assets,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,get-asset-details,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,get-usage-details,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,list-images,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,list-videos,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,list-files,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,list-tags,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,upload-asset,src/mcp-server,create,yes,no,delete-asset,exact,no,delete-asset accepts public_id from upload response,exact
+ent-cloudinary,cloudinary,delete-asset,src/mcp-server,delete,yes,no,upload-asset,partial,no,Original binary must be stored before delete,partial
+ent-cloudinary,cloudinary,asset-update,src/mcp-server,update,yes,no,asset-update,partial,no,Prior metadata not returned,absent
+ent-cloudinary,cloudinary,asset-rename,src/mcp-server,update,yes,no,asset-rename,partial,no,Prior public_id not returned; can swap back if stored,absent
+ent-cloudinary,cloudinary,create-folder,src/mcp-server,create,yes,no,delete-folder,exact,no,,exact
+ent-cloudinary,cloudinary,delete-folder,src/mcp-server,delete,yes,no,create-folder,exact,no,Empty folder only; folder recreatable by name,partial
+ent-cloudinary,cloudinary,move-folder,src/mcp-server,update,yes,no,move-folder,partial,no,Can move back; prior path must be stored,absent
+ent-cloudinary,cloudinary,create-asset-relations,src/mcp-server,create,yes,no,delete-asset-relations,exact,no,delete accepts same asset IDs,exact
+ent-cloudinary,cloudinary,delete-asset-relations,src/mcp-server,delete,yes,no,create-asset-relations,exact,no,,partial
+ent-cloudinary,cloudinary,delete-derived-assets,src/mcp-server,delete,yes,no,,absent,,Derived assets regenerated on demand; no explicit restore,absent
+ent-cloudinary,cloudinary,generate-archive,src/mcp-server,create,yes,no,,absent,,Archive file created; no delete-archive tool,absent
+ent-cloudinary,cloudinary,download-asset-backup,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,transform-asset,src/mcp-server,update,yes,no,,absent,,Applies transformation; no undo transformation tool,partial
+ent-cloudinary,cloudinary,get-tx-reference,src/mcp-server,read,no,,,,,,
+ent-cloudinary,cloudinary,list_tools,src/mcp-server,read,no,,,,,Meta tool listing available tools,
+ent-cloudinary,cloudinary,list_scopes,src/mcp-server,read,no,,,,,Meta tool listing OAuth scopes,
+ent-buildkite,buildkite,list_pipelines,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_pipeline,pkg,read,no,,,,,,
+ent-buildkite,buildkite,create_pipeline,pkg,create,yes,no,,absent,,No delete_pipeline tool,absent
+ent-buildkite,buildkite,update_pipeline,pkg,update,yes,no,update_pipeline,partial,no,Prior config not returned,absent
+ent-buildkite,buildkite,list_builds,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_build,pkg,read,no,,,,,,
+ent-buildkite,buildkite,create_build,pkg,create,yes,no,cancel_build,exact,no,cancel_build accepts build_number from create output,absent
+ent-buildkite,buildkite,cancel_build,pkg,delete,yes,no,create_build,partial,no,Cancellation is terminal; re-build creates new build,partial
+ent-buildkite,buildkite,rebuild_build,pkg,create,yes,no,cancel_build,partial,no,Spawns new build from prior; cancel acts on new build,absent
+ent-buildkite,buildkite,list_artifacts_for_build,pkg,read,no,,,,,,
+ent-buildkite,buildkite,list_artifacts_for_job,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_artifact,pkg,read,no,,,,,,
+ent-buildkite,buildkite,read_logs,pkg,read,no,,,,,,
+ent-buildkite,buildkite,tail_logs,pkg,read,no,,,,,,
+ent-buildkite,buildkite,search_logs,pkg,read,no,,,,,,
+ent-buildkite,buildkite,retry_job,pkg,update,yes,no,,absent,,Retries failed job; no undo-retry tool,absent
+ent-buildkite,buildkite,unblock_job,pkg,update,yes,no,,absent,,Allows blocked job to proceed; no re-block tool,absent
+ent-buildkite,buildkite,list_clusters,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_cluster,pkg,read,no,,,,,,
+ent-buildkite,buildkite,create_cluster,pkg,create,yes,no,,absent,,No delete_cluster tool,absent
+ent-buildkite,buildkite,update_cluster,pkg,update,yes,no,update_cluster,partial,no,Prior name/description not returned,partial
+ent-buildkite,buildkite,list_cluster_queues,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_cluster_queue,pkg,read,no,,,,,,
+ent-buildkite,buildkite,create_cluster_queue,pkg,create,yes,no,,absent,,No delete_cluster_queue tool,absent
+ent-buildkite,buildkite,update_cluster_queue,pkg,update,yes,no,update_cluster_queue,partial,no,Prior config not returned,partial
+ent-buildkite,buildkite,pause_cluster_queue_dispatch,pkg,update,yes,no,resume_cluster_queue_dispatch,exact,no,resume exactly inverts pause,partial
+ent-buildkite,buildkite,resume_cluster_queue_dispatch,pkg,update,yes,no,pause_cluster_queue_dispatch,exact,no,,partial
+ent-buildkite,buildkite,list_annotations,pkg,read,no,,,,,,
+ent-buildkite,buildkite,get_job_env,pkg,read,no,,,,,,
+ent-buildkite,buildkite,current_user,pkg,read,no,,,,,,
